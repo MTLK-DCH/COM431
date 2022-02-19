@@ -1,0 +1,8 @@
+<?
+require("../Cards/cards.php");
+
+
+
+
+
+?>
