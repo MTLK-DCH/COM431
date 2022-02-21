@@ -23,16 +23,18 @@ $deck->shuffle();
 $numOfPlayers = 0;
 // input the num of players
 do{
-    echo "Please input the num of players";
-    $numOfPlayers = fgets(STDIN);
+    echo "Please input the num of players\n";
+    (int)($numOfPlayers = fgets(STDIN));
+    // echo $numOfPlayers;
+    // echo $numOfPlayers>0;
 }
-while(is_numeric($numOfPlayers) && $numOfPlayers > 0);
+while($numOfPlayers <= 0);
 
 // class of player
 class Player extends Hand{
     private $stand = false;
     // This is the sum of the ranks of cards
-    private $sum = 0;
+    public $sum = 0;
     private $lost = false;
 
     // Asking for stand
@@ -69,16 +71,30 @@ class Player extends Hand{
             echo "Bust ". $this->label. " is lost.";
         }
     }
+
+    // show the Cards
+    public function Show(){
+        echo $this->label. "'s cards are:\n";
+        $output = "";
+        foreach($this->cards as $card){
+            $output .= $card ."\n";
+        }
+        echo $output;
+    }
+
     public function isStand(){
         return $this->stand;
     }
     public function isLost(){
         return $this->lost;
     }
+    public function getSum(){
+        return $this->sum;
+    }
 }
 
 // players (hands)
-$dealer = new Hand("dealer");
+$dealer = new Player("dealer");
 $players = [];
 $plarers[] = $dealer;
 for ($i = 0; $i < $numOfPlayers; $i++){
@@ -93,6 +109,7 @@ foreach($players as $player){
     $player->addCard($deck->deal());
     $player->addCard($deck->deal());
     $player->Lost();
+    $player->Show();
 }
 
 // This is the mark of endding of the game
@@ -100,7 +117,7 @@ $end = false;
 
 // BlackJack
 foreach($plarers as $player){
-    if($player->sum == 21){
+    if($player->getSum() == 21){
         echo "BlackJack!!!\n". $player->label. " is WINNER!";
         $end = true;
     }
@@ -113,25 +130,77 @@ $i = 0;
 while($end == false && $i < 5){
     // Play
     foreach($players as $player){
-        if ($player->lost == false && $player->stand == false){
-            echo "Is ". $player->label. "'s turn.";
+        if (!$player->isLost() && !$player->isStand()){
+            echo "Is ". $player->label. "'s turn.\n";
+            $player->Show();
             $player->Stand();
-            $player->addCard($deck->deal());
-            $player->Lost();
-            if ($player->label == "dealer" && $player->isLost()){
-                $end = true;
-                echo "Dealer bust, all players win.";
-                break;
+            if(!$player->isStand()){
+                $player->addCard($deck->deal());
+                $player->Lost();
+                if ($player->label == "dealer" && $player->isLost()){
+                    $end = true;
+                    echo "Dealer bust, all players win.";
+                    break;
+                }
             }
         }
     }
 
     // Judge if the game is terminate before deal 5 cards
-    // $j = 0;
-    // foreach($players as $player){
-    //     if($player->)
-    // }
+    $j = 0;
+    foreach($players as $player){
+        if(!$player->isStand()){
+            break;
+        }
+        $end = true;
+    }
     $i++;
+}
+
+
+function array_sort($array, $on, $order=SORT_ASC)
+{
+    $new_array = array();
+    $sortable_array = array();
+
+    if (count($array) > 0) {
+        foreach ($array as $k => $v) {
+            if (is_array($v)) {
+                foreach ($v as $k2 => $v2) {
+                    if ($k2 == $on) {
+                        $sortable_array[$k] = $v2;
+                    }
+                }
+            } else {
+                $sortable_array[$k] = $v;
+            }
+        }
+
+        switch ($order) {
+            case SORT_ASC:
+                asort($sortable_array);
+            break;
+            case SORT_DESC:
+                arsort($sortable_array);
+            break;
+        }
+
+        foreach ($sortable_array as $k => $v) {
+            $new_array[$k] = $array[$k];
+        }
+    }
+
+    return $new_array;
+}
+
+
+// Judge the winner
+$list = array_sort($plarers, "sum", SORT_DESC);
+foreach($list as $player){
+    if($player->getSum() <= 21){
+        echo $player->label. "is the Winner!!!";
+        break;
+    }
 }
 
 
