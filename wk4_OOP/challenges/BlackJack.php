@@ -77,7 +77,7 @@ class Player extends Hand{
         echo $this->label. "'s cards are:\n";
         $output = "";
         foreach($this->cards as $card){
-            $output .= $card ."\n";
+            $output .= $card;
         }
         echo $output;
     }
@@ -96,16 +96,21 @@ class Player extends Hand{
 // players (hands)
 $dealer = new Player("dealer");
 $players = [];
-$plarers[] = $dealer;
+$players[] = $dealer;
 for ($i = 0; $i < $numOfPlayers; $i++){
-    echo "Please input the name of player". ($i + 1);
+    echo "Please input the name of player". ($i + 1). "\n";
     $name = fgets(STDIN);
+    // delete the newline mark at the end of string
+    $name = substr($name, 0, -1);
+    echo $name;
     $players[] = new Player($name);
 }
 
 
+
 // First Deal
 foreach($players as $player){
+    echo $player->label. "\n";
     $player->addCard($deck->deal());
     $player->addCard($deck->deal());
     $player->Lost();
@@ -116,9 +121,9 @@ foreach($players as $player){
 $end = false;
 
 // BlackJack
-foreach($plarers as $player){
+foreach($players as $player){
     if($player->getSum() == 21){
-        echo "BlackJack!!!\n". $player->label. " is WINNER!";
+        echo "BlackJack!!!\n". $player->label. " is WINNER!\n";
         $end = true;
     }
 }
@@ -139,7 +144,7 @@ while($end == false && $i < 5){
                 $player->Lost();
                 if ($player->label == "dealer" && $player->isLost()){
                     $end = true;
-                    echo "Dealer bust, all players win.";
+                    echo "Dealer bust, all players win.\n";
                     break;
                 }
             }
@@ -195,7 +200,7 @@ function array_sort($array, $on, $order=SORT_ASC)
 
 
 // Judge the winner
-$list = array_sort($plarers, "sum", SORT_DESC);
+$list = array_sort($players, "sum", SORT_DESC);
 foreach($list as $player){
     if($player->getSum() <= 21){
         echo $player->label. "is the Winner!!!";
