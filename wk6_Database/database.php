@@ -9,4 +9,13 @@ while ($row = $result->fetch_assoc()){
         echo $key . ": " .$value . "<br/>";
     }
 }
+
+
+// query items as object
+$result = $db->query($sql);
+while ($obj = $result->fetch_object()){
+    echo "id: ". $obj->id. "<br/>";
+    echo "name: ". $obj->name. "<br/>";
+    echo "age: ". $obj->age. "<br/>";
+}
 $db->close();
