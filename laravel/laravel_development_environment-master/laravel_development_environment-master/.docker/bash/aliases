@@ -1,0 +1,18 @@
+# Laravel specific aliases
+# artisan alias
+alias art="php artisan"
+#artisan migrate
+alias migrate="php artisan migrate"
+#tinker
+alias tinker='php artisan tinker'
+#git aliases
+#reset and delete new files
+alias nah="git reset --hard && git clean -df"
+# pretty git log alias
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+# git commit work in progress
+alias wip="git add . && git commit -m 'wip'"
+# git status
+alias gs='git status'
+# git
+alias g='git'
