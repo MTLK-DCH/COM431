@@ -117,12 +117,4 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT)
-
-
-
-
-Accessing the App via the terminal 
-docker-compose exec app bash 
-Accessing the dB via the terminal 
-docker-compose exec db bash 
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
