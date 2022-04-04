@@ -6,6 +6,7 @@
     <title>Laravel Ajax CRUD Tutorial</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{asset('css/app.css)}}">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
@@ -31,12 +32,21 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($books as $book)
+                        <tr>
+                            <td><input type="checkbox" /></td>
+                            <td>{{ $book->id }}</td>
+                            <td>{{ $book->title }}</td>
+                            <td>{{ $book->code }}</td>
+                            <td>{{ $book->author }}</td>
+                        </tr>
                     </tbody>
                 </table>
                 <input id="btnGet" type="button" value="Get Selected" />
+                
             </div>
         </div>
-        <div><textarea id="messageList" rows="10" cols="100">Selection</textarea> <button type="button" id="copy">Copy</button></div>
+        <div><textarea id="message" rows="10" cols="100">Selection</textarea> <button type="button" id="copy">Copy</button></div>
     </div>
     <!-- boostrap model -->
     <div class="modal fade" id="ajax-book-model" aria-hidden="true">
@@ -81,7 +91,8 @@
         </div>
     </div>
     <!-- end bootstrap model -->
-    <script>
+    <script src="{{asset('js/app.js')}}"></script>
+    <!-- <script>
         $(document).ready(function($) {
             fetchBook(); // Get the table from the dB to start 
             $.ajaxSetup({
@@ -291,7 +302,7 @@
                 });
             }
         });
-    </script>
+    </script> -->
 </body>
 
 </html>
