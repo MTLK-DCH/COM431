@@ -16,3 +16,28 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    $user = auth()->user();
+    return view('dashboard', ['name' => $user->name]);
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+require __DIR__ . '/auth.php';
+
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+    Route::resource('user', 'UsersController');
+});
+
+use App\Http\Controllers\CommentsController;
+
+Route::get('show', [CommentsController::class, 'show']); 
+
+Route::post('save-comment', [CommentsController::class, 'store']); 
+
+Route::get('fetch-comment', [CommentsController::class, 'fetchComment']); 
+
+Route::get('edit-comment/{id}', [CommentsController::class, 'edit']); 
+
+Route::put('update-comment/{id}', [CommentsController::class, 'update']); 
+
+Route::delete('delete-comment/{id}', [CommentsController::class, 'destroy']); 
